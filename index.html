@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+  <title>Skills Assessment</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+	<div id = "container">
+
+		<div id = "topline">
+			Contacts
+		</div>
+		<div id = "screen">
+
+		</div>
+		<div id = "bottomline">
+			<select id = "selectBox">
+				<option>Email Address</option>
+				<option>Phone Number</option>
+			</select>
+		</div>
+
+	</div>
+
+
+<style>
+body{
+	font-family: sans-serif;
+	font-size: 13px;
+}
+#container{
+	margin-left: 100px;
+	margin-top: 100px;
+	width: 280px;
+	background-image: linear-gradient(to bottom, #3f3f3f 70%, #202020 100%);
+	border-radius: 15px;
+	height: 400px;
+	position: fixed;
+	z-index: -1;
+	box-shadow: 3px 3px 15px grey;
+}
+#topline{
+	color: white;
+	padding: 18.5px 0 0 21px;
+	font-weight:bold;
+	font-size: 16px;
+	height: 35px;
+	border-bottom: solid #131313 1px;
+	background-image: linear-gradient(to bottom, #3f3f3f 70%, #202020 100%);
+	border-radius: 15px 15px 0px 0px;
+	
+}
+#fadeout{
+	position: absolute;
+	z-index:3;
+	background-color: #131313;
+	opacity: 0.7;
+	width: 100%;
+	height: 300px;
+	visibility: hidden;
+	margin-top: -300px;
+}
+#screen{
+	position: relative;
+	background-color: #212121;
+	display: table;
+	/*box-shadow: inset 0px -10px 5px 1px black;*/
+	table-layout: fixed;
+	width: 100%;
+	height: 300px;
+	z-index: 2;
+
+}
+.row{
+	content: "";
+	clear: both;
+	display: table;
+	width: 280px;
+	height: 12.5%;
+	border-top: solid #131313 1px;
+	border-bottom: solid #131313 1px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.contactName{
+	position: relative;
+	display: inline-block;
+	color: #ffffff;
+	width: 34%;
+	height: 100%;
+	text-align: left;
+	padding-top: 10px;
+	padding-left: 10px;
+	border-right: solid #131313 1px;
+	
+
+}
+.contactInfo{
+	position: relative;
+	display: inline-block;
+	color: #707070;
+	font-size: 13px;
+	z-index:1;
+	width: 60%;
+	height: 100%;
+	padding-top: 10px;
+	padding-left: 10px;
+
+}
+
+#bottomline{
+
+	height: 47px;
+	width: 280px;
+	padding-top: 12px;
+	padding-left: 130px;
+
+}
+.dot{
+	height: 8px;
+	width: 8px;
+	background-color: #00ff1e;
+	border-radius: 50%;
+	float: left;
+	margin-top: 4px;
+	margin-right: 13px;
+	margin-left: 8px;
+}
+.clickedContactInfo{
+	display: inline-block;
+	color: white;
+	position: absolute;
+	height: 110px;
+	width:55%;
+	padding-top: 10px;
+	padding-left: 10px;
+	background-color: #484848 !important;
+	z-index: 10;
+}
+
+.clickedContactName{
+	position: relative;
+	display: inline-block;
+	color: #ffffff;
+	width: 35%;
+	height: 100%;
+	text-align: left;
+	padding-top: 10px;
+	padding-left: 10px;
+	background-color: #484848 !important;
+	z-index: 10;
+}
+a{
+	color: #00f6ff;
+	text-decoration: underline;
+}
+br {
+	line-height:30%;
+}
+
+
+
+
+</style>
+<script>
+
+var contactArr = [["Christian","christian@yahoo.com"],["Rich","rich@tripod.com"],["Scott","scott@mailinator.com"],["Danny","danny@hotmail.com"],["Taka","taka@myspace.com"],["Tim","tim@netscape.com"],["Patrick","patrick@live.com"],["Jacques","jacques@aol.com"]];
+
+var clickFlag = 0;
+
+
+window.onload = function(){	
+	createContacts();
+	addSelectEvent();
+}
+document.getElementById("selectBox").addEventListener("change", changeInfo);
+
+//function to create the contacts table.
+function createContacts(){
+let screen = document.getElementById("screen");
+	for (var i = 0; i < contactArr.length; i++){
+		let row = document.createElement("div");
+		row.setAttribute('class','row');
+		if(i==7){
+			row.style.boxShadow= 'inset 0px 10px 6px' 
+		}
+		screen.appendChild(row);
+		let getRows = document.getElementsByClassName('row');
+		let contact = document.createElement("div");
+		contact.innerHTML = contactArr[i][0];
+		contact.setAttribute('class','contactName');
+		if(i%2 == 1){
+			contact.style.backgroundColor = "#1a1a1a";
+		}
+		let dot = document.createElement("div");
+		dot.setAttribute("class","dot");
+		contact.appendChild(dot);
+		getRows[i].appendChild(contact)
+		let info = document.createElement("div");
+		if(i == 4){
+			dot.style.backgroundColor = "red"
+		}
+		if(i == 5 || i == 7){
+			dot.style.backgroundColor = "yellow"
+		}
+		info.innerHTML = contactArr[i][1];
+		info.setAttribute('class', 'contactInfo');
+		if(i%2 == 1){
+			info.style.backgroundColor = "#1a1a1a"
+		}
+		getRows[i].appendChild(info)
+	}
+	let fader = document.createElement("div");
+	fader.setAttribute('id', 'fadeout');
+	screen.appendChild(fader);
+}
+//functionality for the select box
+function changeInfo(){
+	let selectBoxVal = document.getElementById("selectBox").value;
+	let contactInfo = document.getElementsByClassName("contactInfo");
+	if (selectBoxVal == "Phone Number"){
+		for(let i = 0; i<contactInfo.length; i++){
+			contactInfo[i].innerHTML = "325-555-1234";
+		}} else {
+		for(let i = 0; i<contactInfo.length; i++){
+			contactInfo[i].innerHTML = contactArr[i][1];
+		}
+}
+}
+
+function addSelectEvent(){
+	let rows = document.getElementsByClassName("row")
+	console.log(rows)
+	for (let i = 0; i < rows.length; i++){
+		rows[i].addEventListener("click", selectContact)
+	}
+}
+
+//function to select contact details. First part expands, second part resets all contacts.
+function selectContact(){
+	if(clickFlag == 0){
+		document.getElementById("fadeout").style.visibility = "visible";
+		this.children[0].className = "clickedContactName";
+		this.children[1].className = "clickedContactInfo";
+		clickFlag = 1;
+		let selectedInfo = this.children[1].innerHTML;
+		let selectedPhone = '555-555-5555';
+		let selectedAddress = '6539 Wilton Ave.' + '<br>' + 'Culver City CA 90234';
+		this.children[1].innerHTML = '<a>'+ selectedInfo + '</a>'+ '<br>'+ '<br>' + selectedPhone + '<br>' + '<br>' + selectedAddress;
+	} else {
+		document.getElementById("fadeout").style.visibility = "hidden";
+		let rows = document.getElementsByClassName("row");
+		for(let i = 0; i < rows.length; i++){
+			rows[i].children[0].className = 'contactName';
+			rows[i].children[1].className = 'contactInfo';
+			rows[i].children[1].innerHTML = contactArr[i][1];
+			clickFlag = 0;
+		}
+
+	}
+	
+}
+
+
+
+
+</script>
